@@ -14,9 +14,7 @@ plugins {
 android {
     namespace = "app.hypershell"
     compileSdk = 36
-    val keystorePropertiesFile = rootProject.file("keystore.properties")
-    val keystoreProps = Properties().apply {
-        load(FileInputStream(keystorePropertiesFile))
+    
     }
     defaultConfig {
         applicationId = "app.hypershell"
@@ -28,29 +26,10 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    signingConfigs {
-        getByName("debug") {
-            keyAlias = keystoreProps.getProperty("keyAlias")
-            keyPassword = keystoreProps.getProperty("keyPassword")
-            storeFile = rootProject.file(keystoreProps["storeFile"] as String)
-            storePassword = keystoreProps.getProperty("storePassword")
-            enableV1Signing = true
-            enableV2Signing = true
-        }
-
-        create("release") {
-            keyAlias = keystoreProps.getProperty("keyAlias")
-            keyPassword = keystoreProps.getProperty("keyPassword")
-            storeFile = rootProject.file(keystoreProps["storeFile"] as String)
-            storePassword = keystoreProps.getProperty("storePassword")
-            enableV1Signing = true
-            enableV2Signing = true
-        }
-    }
+    
 
     buildTypes {
         getByName("debug") {
-            signingConfig = signingConfigs.getByName("debug")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -59,7 +38,6 @@ android {
         }
 
         getByName("release") {
-            signingConfig = signingConfigs.getByName("release")
             isShrinkResources = true
             isMinifyEnabled = true
             proguardFiles(
